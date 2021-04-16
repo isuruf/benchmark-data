@@ -1,0 +1,8 @@
+{
+    "arch": "x86_64",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2650 v3 @ 2.30GHz",
+    "machine": "koelsch",
+    "os": "Linux 4.16.0-2-amd64",
+    "ram": "264041036",
+    "version": 1
+}

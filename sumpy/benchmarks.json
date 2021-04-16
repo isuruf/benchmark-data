@@ -1,0 +1,115 @@
+{
+    "bench_translations.Helmholtz2DTranslation.track_m2l_op_count": {
+        "code": "class TranslationBenchmarkSuite:\n    def track_m2l_op_count(self, param):\n        knl = self.knl(param.dim)\n        m_expn = self.mpole_expn_class(knl, order=param.order)\n        l_expn = self.local_expn_class(knl, order=param.order)\n    \n        src_coeff_exprs = [sym.Symbol(\"src_coeff%d\" % i)\n                for i in range(len(m_expn))]\n        dvec = sym.make_sym_vector(\"d\", knl.dim)\n        src_rscale = sym.Symbol(\"src_rscale\")\n        tgt_rscale = sym.Symbol(\"tgt_rscale\")\n        result = l_expn.translate_from(m_expn, src_coeff_exprs, src_rscale,\n                                       dvec, tgt_rscale)\n        sac = SymbolicAssignmentCollection()\n        for i, expr in enumerate(result):\n            sac.assign_unique(\"coeff%d\" % i, expr)\n        sac.run_global_cse()\n        insns = to_loopy_insns(sac.assignments.items())\n        counter = pymbolic.mapper.flop_counter.CSEAwareFlopCounter()\n    \n        return sum([counter.rec(insn.expression)+1 for insn in insns])\n\n    def setup(self, param):\n        logging.basicConfig(level=logging.INFO)\n        np.random.seed(17)\n        if self.__class__ == TranslationBenchmarkSuite:\n            raise NotImplementedError\n        mpole_expn_class = self.mpole_expn_class\n        if param.order == 3 and H2DMultipoleExpansion == mpole_expn_class:\n            raise NotImplementedError",
+        "name": "bench_translations.Helmholtz2DTranslation.track_m2l_op_count",
+        "param_names": [
+            "order"
+        ],
+        "params": [
+            [
+                "2D_order_10",
+                "2D_order_15",
+                "2D_order_20"
+            ]
+        ],
+        "timeout": 200.0,
+        "type": "track",
+        "unit": "ops",
+        "version": "6e8042e2b0ca04f98de4c058ee06c81d596a51fccb766f17dded7576fee0a623"
+    },
+    "bench_translations.HelmholtzConformingVolumeTaylorTranslation.track_m2l_op_count": {
+        "code": "class TranslationBenchmarkSuite:\n    def track_m2l_op_count(self, param):\n        knl = self.knl(param.dim)\n        m_expn = self.mpole_expn_class(knl, order=param.order)\n        l_expn = self.local_expn_class(knl, order=param.order)\n    \n        src_coeff_exprs = [sym.Symbol(\"src_coeff%d\" % i)\n                for i in range(len(m_expn))]\n        dvec = sym.make_sym_vector(\"d\", knl.dim)\n        src_rscale = sym.Symbol(\"src_rscale\")\n        tgt_rscale = sym.Symbol(\"tgt_rscale\")\n        result = l_expn.translate_from(m_expn, src_coeff_exprs, src_rscale,\n                                       dvec, tgt_rscale)\n        sac = SymbolicAssignmentCollection()\n        for i, expr in enumerate(result):\n            sac.assign_unique(\"coeff%d\" % i, expr)\n        sac.run_global_cse()\n        insns = to_loopy_insns(sac.assignments.items())\n        counter = pymbolic.mapper.flop_counter.CSEAwareFlopCounter()\n    \n        return sum([counter.rec(insn.expression)+1 for insn in insns])\n\n    def setup(self, param):\n        logging.basicConfig(level=logging.INFO)\n        np.random.seed(17)\n        if self.__class__ == TranslationBenchmarkSuite:\n            raise NotImplementedError\n        mpole_expn_class = self.mpole_expn_class\n        if param.order == 3 and H2DMultipoleExpansion == mpole_expn_class:\n            raise NotImplementedError",
+        "name": "bench_translations.HelmholtzConformingVolumeTaylorTranslation.track_m2l_op_count",
+        "param_names": [
+            "order"
+        ],
+        "params": [
+            [
+                "2D_order_10",
+                "2D_order_15",
+                "2D_order_20",
+                "3D_order_5",
+                "3D_order_10"
+            ]
+        ],
+        "timeout": 200.0,
+        "type": "track",
+        "unit": "ops",
+        "version": "6e8042e2b0ca04f98de4c058ee06c81d596a51fccb766f17dded7576fee0a623"
+    },
+    "bench_translations.HelmholtzVolumeTaylorTranslation.track_m2l_op_count": {
+        "code": "class TranslationBenchmarkSuite:\n    def track_m2l_op_count(self, param):\n        knl = self.knl(param.dim)\n        m_expn = self.mpole_expn_class(knl, order=param.order)\n        l_expn = self.local_expn_class(knl, order=param.order)\n    \n        src_coeff_exprs = [sym.Symbol(\"src_coeff%d\" % i)\n                for i in range(len(m_expn))]\n        dvec = sym.make_sym_vector(\"d\", knl.dim)\n        src_rscale = sym.Symbol(\"src_rscale\")\n        tgt_rscale = sym.Symbol(\"tgt_rscale\")\n        result = l_expn.translate_from(m_expn, src_coeff_exprs, src_rscale,\n                                       dvec, tgt_rscale)\n        sac = SymbolicAssignmentCollection()\n        for i, expr in enumerate(result):\n            sac.assign_unique(\"coeff%d\" % i, expr)\n        sac.run_global_cse()\n        insns = to_loopy_insns(sac.assignments.items())\n        counter = pymbolic.mapper.flop_counter.CSEAwareFlopCounter()\n    \n        return sum([counter.rec(insn.expression)+1 for insn in insns])\n\n    def setup(self, param):\n        logging.basicConfig(level=logging.INFO)\n        np.random.seed(17)\n        if self.__class__ == TranslationBenchmarkSuite:\n            raise NotImplementedError\n        mpole_expn_class = self.mpole_expn_class\n        if param.order == 3 and H2DMultipoleExpansion == mpole_expn_class:\n            raise NotImplementedError",
+        "name": "bench_translations.HelmholtzVolumeTaylorTranslation.track_m2l_op_count",
+        "param_names": [
+            "order"
+        ],
+        "params": [
+            [
+                "2D_order_10",
+                "3D_order_5"
+            ]
+        ],
+        "timeout": 200.0,
+        "type": "track",
+        "unit": "ops",
+        "version": "6e8042e2b0ca04f98de4c058ee06c81d596a51fccb766f17dded7576fee0a623"
+    },
+    "bench_translations.LaplaceConformingVolumeTaylorTranslation.track_m2l_op_count": {
+        "code": "class TranslationBenchmarkSuite:\n    def track_m2l_op_count(self, param):\n        knl = self.knl(param.dim)\n        m_expn = self.mpole_expn_class(knl, order=param.order)\n        l_expn = self.local_expn_class(knl, order=param.order)\n    \n        src_coeff_exprs = [sym.Symbol(\"src_coeff%d\" % i)\n                for i in range(len(m_expn))]\n        dvec = sym.make_sym_vector(\"d\", knl.dim)\n        src_rscale = sym.Symbol(\"src_rscale\")\n        tgt_rscale = sym.Symbol(\"tgt_rscale\")\n        result = l_expn.translate_from(m_expn, src_coeff_exprs, src_rscale,\n                                       dvec, tgt_rscale)\n        sac = SymbolicAssignmentCollection()\n        for i, expr in enumerate(result):\n            sac.assign_unique(\"coeff%d\" % i, expr)\n        sac.run_global_cse()\n        insns = to_loopy_insns(sac.assignments.items())\n        counter = pymbolic.mapper.flop_counter.CSEAwareFlopCounter()\n    \n        return sum([counter.rec(insn.expression)+1 for insn in insns])\n\n    def setup(self, param):\n        logging.basicConfig(level=logging.INFO)\n        np.random.seed(17)\n        if self.__class__ == TranslationBenchmarkSuite:\n            raise NotImplementedError\n        mpole_expn_class = self.mpole_expn_class\n        if param.order == 3 and H2DMultipoleExpansion == mpole_expn_class:\n            raise NotImplementedError",
+        "name": "bench_translations.LaplaceConformingVolumeTaylorTranslation.track_m2l_op_count",
+        "param_names": [
+            "order"
+        ],
+        "params": [
+            [
+                "2D_order_10",
+                "2D_order_15",
+                "2D_order_20",
+                "3D_order_5",
+                "3D_order_10"
+            ]
+        ],
+        "timeout": 200.0,
+        "type": "track",
+        "unit": "ops",
+        "version": "6e8042e2b0ca04f98de4c058ee06c81d596a51fccb766f17dded7576fee0a623"
+    },
+    "bench_translations.LaplaceVolumeTaylorTranslation.track_m2l_op_count": {
+        "code": "class TranslationBenchmarkSuite:\n    def track_m2l_op_count(self, param):\n        knl = self.knl(param.dim)\n        m_expn = self.mpole_expn_class(knl, order=param.order)\n        l_expn = self.local_expn_class(knl, order=param.order)\n    \n        src_coeff_exprs = [sym.Symbol(\"src_coeff%d\" % i)\n                for i in range(len(m_expn))]\n        dvec = sym.make_sym_vector(\"d\", knl.dim)\n        src_rscale = sym.Symbol(\"src_rscale\")\n        tgt_rscale = sym.Symbol(\"tgt_rscale\")\n        result = l_expn.translate_from(m_expn, src_coeff_exprs, src_rscale,\n                                       dvec, tgt_rscale)\n        sac = SymbolicAssignmentCollection()\n        for i, expr in enumerate(result):\n            sac.assign_unique(\"coeff%d\" % i, expr)\n        sac.run_global_cse()\n        insns = to_loopy_insns(sac.assignments.items())\n        counter = pymbolic.mapper.flop_counter.CSEAwareFlopCounter()\n    \n        return sum([counter.rec(insn.expression)+1 for insn in insns])\n\n    def setup(self, param):\n        logging.basicConfig(level=logging.INFO)\n        np.random.seed(17)\n        if self.__class__ == TranslationBenchmarkSuite:\n            raise NotImplementedError\n        mpole_expn_class = self.mpole_expn_class\n        if param.order == 3 and H2DMultipoleExpansion == mpole_expn_class:\n            raise NotImplementedError",
+        "name": "bench_translations.LaplaceVolumeTaylorTranslation.track_m2l_op_count",
+        "param_names": [
+            "order"
+        ],
+        "params": [
+            [
+                "2D_order_10",
+                "3D_order_5"
+            ]
+        ],
+        "timeout": 200.0,
+        "type": "track",
+        "unit": "ops",
+        "version": "6e8042e2b0ca04f98de4c058ee06c81d596a51fccb766f17dded7576fee0a623"
+    },
+    "bench_translations.TranslationBenchmarkSuite.track_m2l_op_count": {
+        "code": "class TranslationBenchmarkSuite:\n    def track_m2l_op_count(self, param):\n        knl = self.knl(param.dim)\n        m_expn = self.mpole_expn_class(knl, order=param.order)\n        l_expn = self.local_expn_class(knl, order=param.order)\n    \n        src_coeff_exprs = [sym.Symbol(\"src_coeff%d\" % i)\n                for i in range(len(m_expn))]\n        dvec = sym.make_sym_vector(\"d\", knl.dim)\n        src_rscale = sym.Symbol(\"src_rscale\")\n        tgt_rscale = sym.Symbol(\"tgt_rscale\")\n        result = l_expn.translate_from(m_expn, src_coeff_exprs, src_rscale,\n                                       dvec, tgt_rscale)\n        sac = SymbolicAssignmentCollection()\n        for i, expr in enumerate(result):\n            sac.assign_unique(\"coeff%d\" % i, expr)\n        sac.run_global_cse()\n        insns = to_loopy_insns(sac.assignments.items())\n        counter = pymbolic.mapper.flop_counter.CSEAwareFlopCounter()\n    \n        return sum([counter.rec(insn.expression)+1 for insn in insns])\n\n    def setup(self, param):\n        logging.basicConfig(level=logging.INFO)\n        np.random.seed(17)\n        if self.__class__ == TranslationBenchmarkSuite:\n            raise NotImplementedError\n        mpole_expn_class = self.mpole_expn_class\n        if param.order == 3 and H2DMultipoleExpansion == mpole_expn_class:\n            raise NotImplementedError",
+        "name": "bench_translations.TranslationBenchmarkSuite.track_m2l_op_count",
+        "param_names": [
+            "order"
+        ],
+        "params": [
+            [
+                "2D_order_10",
+                "2D_order_15",
+                "2D_order_20",
+                "3D_order_5",
+                "3D_order_10"
+            ]
+        ],
+        "timeout": 200.0,
+        "type": "track",
+        "unit": "ops",
+        "version": "6e8042e2b0ca04f98de4c058ee06c81d596a51fccb766f17dded7576fee0a623"
+    },
+    "version": 2
+}
